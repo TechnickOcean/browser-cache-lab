@@ -1,5 +1,7 @@
 # [web] spanote
 
+origin: <https://blog.arkark.dev/2022/11/18/seccon-en/#web-spanote>
+
 ## Description
 
 Single Page Application makes our note app simple.

@@ -47,4 +47,12 @@ app.get('/status/:statuscode', (c) => {
   return c.html(buildBFCacheHTML(`${statuscode} example`))
 })
 
+app.get('/window-open', (c) => {
+  return c.html(buildBFCacheHTML(
+    `opener and opened window will not enter bfcache in chrome`,
+    `<script>const keepit=window.open('/')</script>`
+  ))
+})
+
+
 export default app
