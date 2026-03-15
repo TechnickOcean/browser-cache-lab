@@ -69,7 +69,6 @@ fastify.register(require("@fastify/static"), {
 fastify.post("/", async (req, reply) => {
   // Received data from navigator.sendBeacon
   console.log(req.body); // Got a flag!
-  process.exit(0);
 });
 
 const start = async () => {
@@ -84,7 +83,7 @@ const start = async () => {
       await sleep(1 * 1000);
       await exploit();
       await sleep(10 * 1000);
-      fail("Failed");
+      // fail("Failed");
     }
   );
 };

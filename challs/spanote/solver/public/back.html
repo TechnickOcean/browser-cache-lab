@@ -1,4 +1,5 @@
 <script>
+  navigator.sendBeacon(location.origin, "backing");
   const n = parseInt(new URLSearchParams(location.search).get("n"));
   history.go(-n);
 </script>
