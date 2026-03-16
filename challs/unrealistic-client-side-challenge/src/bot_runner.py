@@ -39,16 +39,24 @@ def run_admin_bot(target_url: str) -> None:
         driver.set_script_timeout(10)
         driver.get(f"{base}/motd")
         WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.XPATH, "//h1[normalize-space()='Message of the Day']"))
+            EC.presence_of_element_located(
+                (By.XPATH, "//h1[normalize-space()='Message of the Day']")
+            )
         )
         driver.get(f"{base}/login")
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.NAME, "username")))
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.NAME, "username"))
+        )
         driver.find_element(By.NAME, "username").send_keys("admin")
         driver.find_element(By.NAME, "password").send_keys(admin_pw)
         driver.find_element(By.CSS_SELECTOR, "button[type='submit']").click()
-        WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.ID, "inbox-page")))
+        WebDriverWait(driver, 5).until(
+            EC.presence_of_element_located((By.ID, "inbox-page"))
+        )
         driver.get(f"{base}/flag")
-        WebDriverWait(driver, 5).until(EC.text_to_be_present_in_element((By.TAG_NAME, "body"), "OK"))
+        WebDriverWait(driver, 5).until(
+            EC.text_to_be_present_in_element((By.TAG_NAME, "body"), "OK")
+        )
         driver.get(target_url)
         time.sleep(10)
     finally:

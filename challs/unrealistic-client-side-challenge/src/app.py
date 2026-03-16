@@ -27,15 +27,18 @@ DB_PATH = "/app/db/app.db"
 COOKIE_NAME_SESSION = "session"
 COOKIE_NAME_MOTD = "motd"
 
+
 def get_main_origin():
-    host = request.host.rsplit(':', 1)[0]
+    host = request.host.rsplit(":", 1)[0]
     scheme = request.scheme
     return f"{scheme}://{host}:5000"
 
+
 def get_motd_origin():
-    host = request.host.rsplit(':', 1)[0]
+    host = request.host.rsplit(":", 1)[0]
     scheme = request.scheme
     return f"{scheme}://{host}:5001"
+
 
 def _read_flag_file(name: str) -> str:
     base_dir = os.path.dirname(os.path.abspath(__file__))
@@ -156,7 +159,9 @@ def delete_message_for_user(user_id: int, message_id: str) -> bool:
     return cur.rowcount == 1
 
 
-def issue_session_cookie(response, user_id: int, extra_claims: Optional[Dict[str, Any]] = None):
+def issue_session_cookie(
+    response, user_id: int, extra_claims: Optional[Dict[str, Any]] = None
+):
     now = _utcnow()
     payload: Dict[str, Any] = {
         "sub": str(user_id),
@@ -244,6 +249,7 @@ def _inject_auth_state():
 def _inject_auth_state_motd():
     return _inject_common_template_vars()
 
+
 @app.before_request
 def _attach_nonce():
     g.csp_nonce = _new_nonce()
@@ -264,6 +270,7 @@ def _set_security_headers(resp):
             "style-src 'self'; "
         )
     return resp
+
 
 @app.teardown_appcontext
 def _close_db(_exc):
@@ -354,8 +361,11 @@ def motd():
             path="/motd",
         )
     resp.headers["Content-Type"] = "text/html"
-    resp.headers["Content-Security-Policy"] = "default-src 'none'; img-src http: https:; style-src 'self';"
+    resp.headers["Content-Security-Policy"] = (
+        "default-src 'none'; img-src http: https:; style-src 'self';"
+    )
     return resp
+
 
 @motd_app.route(
     "/",
@@ -374,6 +384,7 @@ def motd_fallback(path: str):
 
     code = 302 if request.method in {"GET", "HEAD"} else 307
     return redirect(target, code=code)
+
 
 @app.get("/inbox")
 @require_login
@@ -420,22 +431,22 @@ def api_messages():
         return make_response("Invalid X-Server-Function", 400)
     rows = list_messages_for_user(g.user_id)
     return json.dumps(
-        {
-            "messages": [
-                {"id": r["id"], "created_at": r["created_at"]} for r in rows
-            ]
-        }
+        {"messages": [{"id": r["id"], "created_at": r["created_at"]} for r in rows]}
     )
 
 
-@app.route("/api/messages/<message_id>", methods=["GET"]) 
+@app.route("/api/messages/<message_id>", methods=["GET"])
 @require_api_auth
 def api_message(message_id: str):
     if request.headers.get("X-Server-Function") == "read":
         row = get_message_for_user(g.user_id, message_id)
         if not row:
             abort(404)
-        resp = make_response(json.dumps({"id": row["id"], "body": row["body"], "created_at": row["created_at"]}))
+        resp = make_response(
+            json.dumps(
+                {"id": row["id"], "body": row["body"], "created_at": row["created_at"]}
+            )
+        )
     elif request.headers.get("X-Server-Function") == "delete":
         ok = delete_message_for_user(g.user_id, message_id)
         resp = make_response(json.dumps({"deleted": ok}))
@@ -464,9 +475,11 @@ def _validate_bot_url(url: str) -> str:
         raise ValueError("URL must start with http://127.0.0.1:5000")
     return url
 
+
 @app.get("/bot")
 def bot_page():
     return render_template("bot.html")
+
 
 @app.post("/bot")
 def bot_post():
@@ -478,11 +491,13 @@ def bot_post():
 
     try:
         from bot_runner import run_admin_bot
+
         run_admin_bot(target)
     except Exception as e:
         return render_template("bot.html", error=f"Bot failed: {e}"), 500
 
     return render_template("bot.html", ok=True)
+
 
 def init() -> None:
     os.environ["ADMIN_PASSWORD"] = secrets.token_urlsafe(32)
@@ -517,7 +532,9 @@ if __name__ == "__main__":
     import threading
 
     def _run_motd_server():
-        motd_app.run(host="0.0.0.0", port=5001, debug=False, use_reloader=False, threaded=True)
+        motd_app.run(
+            host="0.0.0.0", port=5001, debug=False, use_reloader=False, threaded=True
+        )
 
     t = threading.Thread(target=_run_motd_server, daemon=True)
     t.start()
