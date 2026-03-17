@@ -16,13 +16,13 @@ const handler = async (req, res) => {
 	let memo, targetUrl, ip;
 
 	switch (url.pathname) {
-	case "/":
-		memo =
-			cookie.parse(req.headers.cookie || "").memo ??
-			`surely...`;
+		case "/":
+			memo =
+				cookie.parse(req.headers.cookie || "").memo ??
+				`surely...`;
 
-		res.setHeader("Content-Type", "text/html; charset=utf-8");
-		res.end(`
+			res.setHeader("Content-Type", "text/html; charset=utf-8");
+			res.end(`
 <style>
 	textarea { resize: none; }
 	h1 { margin-top: 80px; }
@@ -68,83 +68,83 @@ if (window.opener !== null) {
 	<input type="submit" value="update memo">
 </form>
 		`.trim());
-		break;
-
-	case "/memo":
-		memo = url.searchParams.get("memo") ?? "";
-		res.statusCode = 302;
-		res.setHeader("Set-Cookie", cookie.serialize("memo", memo));
-		res.setHeader("Location", "/");
-		res.end();
-		break;
-
-	case "/visit":
-		ip = req.socket.remoteAddress;
-		targetUrl = url.searchParams.get("url");
-		res.setHeader("Content-Type", "text/plain; charset=utf-8");
-		
-		if (!targetUrl) {
-			res.statusCode = 400;
-			res.end("no url provided");
 			break;
-		}
-		
-		// you can only visit once every 10 seconds
-		if (ips.has(ip) && ips.get(ip) + 10*1000 > Date.now()) {
-			res.statusCode = 429;
-			res.end("still visiting, try again in a bit");
+
+		case "/memo":
+			memo = url.searchParams.get("memo") ?? "";
+			res.statusCode = 302;
+			res.setHeader("Set-Cookie", cookie.serialize("memo", memo));
+			res.setHeader("Location", "/");
+			res.end();
 			break;
-		}
 
-		ips.set(ip, Date.now());
+		case "/visit":
+			ip = req.socket.remoteAddress;
+			targetUrl = url.searchParams.get("url");
+			res.setHeader("Content-Type", "text/plain; charset=utf-8");
 
-		console.log(`Visiting ${targetUrl}`);
+			if (!targetUrl) {
+				res.statusCode = 400;
+				res.end("no url provided");
+				break;
+			}
 
-		// on the remote instance, the remote challenge origin is passed instead of http://localhost:1337
-		const proc = spawn("node", ["bot.js", "-c", 'http://localhost:1337/', targetUrl], { detached: true });
+			// you can only visit once every 10 seconds
+			if (ips.has(ip) && ips.get(ip) + 10 * 1000 > Date.now()) {
+				res.statusCode = 429;
+				res.end("still visiting, try again in a bit");
+				break;
+			}
 
-		let stdoutChunks = [];
-		let stderrChunks = [];
+			ips.set(ip, Date.now());
 
-		// this part is taken from aacsp, justctf
-		proc.on('exit', (code) =>
-			console.log('Process exited with code', code)
-		);
-		
-		proc.stdout.on('data', (data) => {
-			stdoutChunks = stdoutChunks.concat(data);
-		});
-		proc.stdout.on('end', () => {
-			const stdoutContent = Buffer.concat(stdoutChunks).toString();
-			console.log('stdout chars:', stdoutContent.length);
-			console.log(stdoutContent);
-		});
-	
-		proc.stderr.on('data', (data) => {
-			stderrChunks = stderrChunks.concat(data);
-		});
-		proc.stderr.on('end', () => {
-			const stderrContent = Buffer.concat(stderrChunks).toString();
-			console.log('stderr chars:', stderrContent.length);
-			console.log(stderrContent);
-		});
+			console.log(`Visiting ${targetUrl}`);
 
-		await Promise.race([
-			new Promise(r => proc.on("exit", r)),
-			sleep(30000)
-		]);
-	  
-		if (proc.exitCode === null) {
-		  process.kill(-proc.pid);
-		}
+			// on the remote instance, the remote challenge origin is passed instead of http://localhost:1337
+			const proc = spawn("node", ["bot.js", "-c", 'http://localhost:1337/', targetUrl], { detached: true });
 
-		res.end("the admin bot has visited your link");
-		break;
+			let stdoutChunks = [];
+			let stderrChunks = [];
 
-	default:
-		res.statusCode = 404;
-		res.setHeader("Content-Type", "text/plain; charset=utf-8");
-		res.end("not found");
+			// this part is taken from aacsp, justctf
+			proc.on('exit', (code) =>
+				console.log('Process exited with code', code)
+			);
+
+			proc.stdout.on('data', (data) => {
+				stdoutChunks = stdoutChunks.concat(data);
+			});
+			proc.stdout.on('end', () => {
+				const stdoutContent = Buffer.concat(stdoutChunks).toString();
+				console.log('stdout chars:', stdoutContent.length);
+				console.log(stdoutContent);
+			});
+
+			proc.stderr.on('data', (data) => {
+				stderrChunks = stderrChunks.concat(data);
+			});
+			proc.stderr.on('end', () => {
+				const stderrContent = Buffer.concat(stderrChunks).toString();
+				console.log('stderr chars:', stderrContent.length);
+				console.log(stderrContent);
+			});
+
+			await Promise.race([
+				new Promise(r => proc.on("exit", r)),
+				sleep(30000)
+			]);
+
+			if (proc.exitCode === null) {
+				process.kill(-proc.pid);
+			}
+
+			res.end("the admin bot has visited your link");
+			break;
+
+		default:
+			res.statusCode = 404;
+			res.setHeader("Content-Type", "text/plain; charset=utf-8");
+			res.end("not found");
 	}
 };
 

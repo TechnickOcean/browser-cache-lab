@@ -3,7 +3,7 @@ import type { StatusCode } from 'hono/utils/http-status'
 const app = new Hono()
 
 function buildBFCacheHTML(msg: string, suffix = "") {
-  return `
+  return /* html */`
   <!Doctype html>
   <html>
     <body>
@@ -50,7 +50,7 @@ app.get('/status/:statuscode', (c) => {
 app.get('/window-open', (c) => {
   return c.html(buildBFCacheHTML(
     `opener and opened window will not enter bfcache in chrome`,
-    `<script>const keepit=window.open('/')</script>`
+    /* html */`<script>const keepit=window.open('/')</script>`
   ))
 })
 
