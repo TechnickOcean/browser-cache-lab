@@ -20,7 +20,7 @@ function buildBFCacheHTML(msg: string, suffix = "") {
         if (event.persisted) {
           msg.textContent = 'hit bfcache.'
           msg.style.color = 'blue'
-          } else {
+        } else {
             msg.textContent = 'fetched from remote.'
             msg.style.color = 'red'
         }
