@@ -1,0 +1,8 @@
+name: "leaky-note"
+
+services:
+  web:
+    build: .
+    ports:
+      - "1337:80"
+    restart: always
