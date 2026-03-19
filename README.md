@@ -27,8 +27,8 @@ bun --watch research-bfcache.ts
 | ----- | ----- | ----- | ----- |
 | [spanote](https://blog.arkark.dev/2022/11/18/seccon-en/#web-spanote) | [arkark](https://arkark.dev/) | SECCON CTF 2022 Quals | yes |
 | [srcdoc-memos-revenge](https://github.com/idekctf/idekctf-2024/tree/main/web/srcdoc-memos) | [icesfont](https://github.com/icesfont/) | idekCTF 2024 | yes |
-| [safestnote](https://github.com/dicegang/dicectf-quals-2025-challenges/tree/main/web/safestnote) | [arxenix](https://github.com/arxenix) | DiceCTF Quals 2025 | not yet |
-| [append-note](https://github.com/bliutech/my-ctf-challenges/tree/main/lactf-2026/append-note) | [bliutech](https://github.com/bliutech) | LaCTF 2026 | not yet |
+| [safestnote](https://github.com/dicegang/dicectf-quals-2025-challenges/tree/main/web/safestnote) | [arxenix](https://github.com/arxenix) | DiceCTF Quals 2025 | yes |
+| [append-note](https://github.com/bliutech/my-ctf-challenges/tree/main/lactf-2026/append-note) | [bliutech](https://github.com/bliutech) | LaCTF 2026 | yes |
 | [greeeting-chall](https://gist.github.com/JorianWoltjer/744d8877184481079b4e219a7239d193) | [Jorian](https://gist.github.com/JorianWoltjer) | tweet | not yet |
 | [leaky-flagment](https://challenge-0325.intigriti.io/) | [0x999](https://x.com/_0x999) | Intigriti March 2025 challenge | not yet |
 | [leakynote](https://gist.github.com/parrot409/09688d0bb81acbe8cd1a10cfdaa59e45) | [parrot409](https://github.com/parrot409) | corCTF 2023 | not yet |

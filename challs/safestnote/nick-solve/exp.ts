@@ -28,6 +28,8 @@ setTimeout(() => {
 )
 
 app.get('/at', (c) => {
+  // 相比 adragos 的 exp，我只使用了一个 style，就足以 leak 出 01 状态
+  // 我使用了默认 value 防止设置 payload 时，空值命中 valid
   return c.html(`
     <script>
       (async function(){
@@ -102,3 +104,5 @@ Bun.serve({
 })
 
 await binary_brute()
+
+// 大概需要十五分钟爆破 36 位 flag

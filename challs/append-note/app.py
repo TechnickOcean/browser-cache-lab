@@ -1,4 +1,5 @@
-import os, secrets
+import os
+import secrets
 from urllib.parse import urlparse
 from flask import Flask, render_template, request, make_response
 from flask_limiter import Limiter
@@ -6,7 +7,7 @@ import json
 
 app = Flask(__name__)
 
-REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379')
+REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379")
 
 limiter = Limiter(
     lambda: "global",
@@ -16,9 +17,9 @@ limiter = Limiter(
 
 ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "password")
 FLAG = os.environ.get("FLAG", "lactf{test}")
-if (HOST := os.environ.get("HOST")):
+if HOST := os.environ.get("HOST"):
     pass
-elif (metadata := os.environ.get("INSTANCER_METADATA")):
+elif metadata := os.environ.get("INSTANCER_METADATA"):
     HOST = "https://" + json.loads(metadata)["http"]["app"]["4000"]
 else:
     HOST = "http://localhost:4000"
@@ -41,6 +42,11 @@ def index():
     return render_template("index.html", is_admin=is_admin, url=HOST)
 
 
+@app.route("/_s")
+def debug():
+    return notes
+
+
 @app.route("/append")
 def append():
     if request.cookies.get("admin") != ADMIN_SECRET:
@@ -54,7 +60,7 @@ def append():
         parsed_url.scheme not in ["http", "https"]
         or parsed_url.hostname != urlparse(HOST).hostname
     ):
-        return f"Invalid redirect URL", 400
+        return "Invalid redirect URL", 400
 
     status = 200 if any(note.startswith(content) for note in notes) else 404
     notes.append(content)
