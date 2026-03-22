@@ -1,6 +1,13 @@
 # greeeting-chall
 
-extended from <https://gist.github.com/JorianWoltjer/744d8877184481079b4e219a7239d193>
+Extended from <https://gist.github.com/JorianWoltjer/744d8877184481079b4e219a7239d193> by Nick.
+
+无 docker，启动方式：
+
+```sh
+bun install
+bun index.js
+```
 
 ## links
 

@@ -4,8 +4,8 @@ WORKDIR /usr/app
 
 RUN apk add --update --no-cache firefox wget dbus ttf-freefont libstdc++ harfbuzz nss freetype nodejs npm
 
-RUN wget https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz && \
-    tar -xzf geckodriver-*.tar.gz && \
+RUN wget https://ghfast.top/https://github.com/mozilla/geckodriver/releases/download/v0.35.0/geckodriver-v0.35.0-linux64.tar.gz
+RUN tar -xzf geckodriver-*.tar.gz && \
     mv geckodriver /usr/local/bin/ && \
     rm geckodriver-*.tar.gz
 

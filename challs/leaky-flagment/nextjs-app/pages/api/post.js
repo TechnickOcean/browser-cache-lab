@@ -27,8 +27,8 @@ export default async function handler(req, res) {
             case 'GET':
                 try {
                     let secret_cookie;
-                    try{
-                    secret_cookie = atob(cookies.get('secret'));
+                    try {
+                        secret_cookie = atob(cookies.get('secret'));
                     } catch (e) {
                         secret_cookie = '';
                     }
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
                     if (!secretRegex.test(secret_cookie)) {
                         return res.status(400).json({ message: 'Invalid cookie format' });
                     }
-                    const redisKey = "nextjs:"+btoa(secret_cookie);
+                    const redisKey = "nextjs:" + btoa(secret_cookie);
                     const userData = await redis.get(redisKey);
                     if (!userData) {
                         res.setHeader('Set-Cookie', 'secret=; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=None');
@@ -61,8 +61,8 @@ export default async function handler(req, res) {
             case 'POST':
                 try {
                     let secret_cookie;
-                    try{
-                    secret_cookie = atob(cookies.get('secret'));
+                    try {
+                        secret_cookie = atob(cookies.get('secret'));
                     } catch (e) {
                         secret_cookie = '';
                     }
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
                     if (content_type && !content_type.startsWith('application/json')) {
                         return res.status(400).json({ message: 'Invalid content type' });
                     }
-                    const redisKey = "nextjs:"+btoa(secret_cookie);
+                    const redisKey = "nextjs:" + btoa(secret_cookie);
                     const userData = await redis.get(redisKey);
                     if (!userData) {
                         return res.status(403).json({ message: 'Unauthorized' });

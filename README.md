@@ -36,4 +36,4 @@ bun --watch research-bfcache.ts
 | [append-note](https://github.com/bliutech/my-ctf-challenges/tree/main/lactf-2026/append-note) | [bliutech](https://github.com/bliutech) | LaCTF 2026 | yes |
 | [leakynote](https://gist.github.com/parrot409/09688d0bb81acbe8cd1a10cfdaa59e45) | [parrot409](https://github.com/parrot409) | corCTF 2023 | no |
 | [greeeting-chall](https://gist.github.com/JorianWoltjer/744d8877184481079b4e219a7239d193) | [Jorian](https://gist.github.com/JorianWoltjer) | tweet | yes |
-| [leaky-flagment](https://challenge-0325.intigriti.io/) | [0x999](https://x.com/_0x999) | Intigriti March 2025 challenge | not yet |
+| [leaky-flagment](https://challenge-0325.intigriti.io/) | [0x999](https://x.com/_0x999) | Intigriti March 2025 challenge | yes |

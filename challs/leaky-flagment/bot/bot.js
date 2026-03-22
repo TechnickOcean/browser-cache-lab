@@ -18,7 +18,7 @@ redisClient.on('error', (err) => {
 
 redisClient.connect();
 
-const isValidIPv4 = (input) => {  
+const isValidIPv4 = (input) => {
   const parts = input.split('.');
   if (parts.length !== 4) return false;
   return parts.every(part => /^(0|25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$/.test(part));
@@ -29,11 +29,11 @@ app.put('/enqueue', async (req, res) => {
     return res.status(400).send('Invalid content type.');
   }
   const { url, userIP } = req.body;
-  
+
   if (!userIP || typeof userIP !== 'string' || !isValidIPv4(userIP)) {
     return res.status(400).send('Invalid user IP');
   }
-  
+
   if (!url || typeof url !== 'string' || (!url.startsWith('http://') && !url.startsWith('https://')) || url.length > 2048) {
     return res.status(400).send('Invalid URL');
   }
@@ -129,7 +129,7 @@ async function visitUrl(url) {
 
     console.log(`Navigating to URL: ${url}`);
     await driver.get(url);
-    
+
     await driver.wait(async () => {
       return (await driver.executeScript('return document.readyState')) === 'complete';
     }, timeout);
